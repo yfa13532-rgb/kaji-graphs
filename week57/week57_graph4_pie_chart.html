@@ -1,10 +1,15 @@
-<div id="week57_pie_chart" style="height:500px;width:100%"></div>
+<div id="week57_pie" style="height:500px;width:100%"></div>
 <script src="https://cdn.plot.ly/plotly-3.3.1.min.js"></script>
 <script>
-Plotly.newPlot("week57_pie_chart",[{
+Plotly.newPlot("week57_pie",[{
 type:"pie",hole:0.4,
-labels:["夕食の準備","朝食の片付け","西友注文","昼食の片付け","夕食の片付け","昼食の準備","洗濯物を干す","洗面台の掃除","朝食・弁当作り","洗濯物をたたむ・しまう","西友受取","洗濯機を回す","掃除機をかける","布団をしまう・ルンバ","布団しき","水着洗い"],
-values:[257.9,40.8,28.4,159.0,124.3,23.4,133.4,20.1,30.2,87.8,14.5,18.0,23.6,26.5,6.5,4.1],
-textposition:"inside",textinfo:"percent+label",sort:true,direction:"clockwise"
-}],{title:{text:"第57週：家事時間の内訳（割合）",x:0.5},height:500},{responsive:true});
+labels:["夕食の準備","夕食の片付け","布団しき","布団をしまう・ルンバ","掃除機をかける","昼食の準備","昼食の片付け","朝食の片付け","朝食・弁当作り","水着洗い","洗濯機を回す","洗濯物をたたむ・しまう","洗濯物を干す","洗面台の掃除","西友受取","西友注文"],
+values:[257.9,124.3,6.5,26.5,23.6,23.4,159.0,40.8,30.2,4.1,18.0,87.8,133.4,20.1,14.5,28.4],
+textposition:"inside",textinfo:"percent+label",sort:true,direction:"clockwise",
+hovertemplate:"task=%{label}<br>time_min=%{value}<extra></extra>"
+}],{
+title:{text:"第57週：家事時間の内訳（割合）",x:0.5},
+height:500,
+paper_bgcolor:"white"
+},{responsive:true});
 </script>
