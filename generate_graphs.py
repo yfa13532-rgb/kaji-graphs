@@ -375,8 +375,11 @@ for graph_no, (name, fig) in enumerate(
         f"{name}.html"
     )
 
+    output_dir = f"week{week_no}"
+    os.makedirs(output_dir, exist_ok=True)
+
     fig.write_html(
-        filename,
+        os.path.join(output_dir, filename),
         full_html=False,
         include_plotlyjs="cdn"
     )
