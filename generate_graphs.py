@@ -97,12 +97,37 @@ daily_total = (
     .reset_index()
 )
 
-# 自分の家事が0分の日も表示できるようにする
+# 「家事なし」と「未記録」を区別するため、確定した0分の日だけ
+# no_housework_days.csv から追加する。未記録日は自動補完しない。
+no_housework_file = "no_housework_days.csv"
+zero_dates = pd.DatetimeIndex([])
+
+if os.path.exists(no_housework_file):
+    zero_days = pd.read_csv(no_housework_file)
+    required_columns = {"week_no", "date", "reason"}
+    if not required_columns.issubset(zero_days.columns):
+        raise ValueError("no_housework_days.csv の列が不足しています。")
+
+    zero_days["date"] = pd.to_datetime(zero_days["date"], errors="raise")
+    zero_days = zero_days[zero_days["week_no"] == week_no].copy()
+    if zero_days["date"].duplicated().any():
+        raise ValueError(f"第{week_no}週の家事なし日が重複しています。")
+
+    zero_dates = pd.DatetimeIndex(zero_days["date"])
+    recorded_dates = pd.DatetimeIndex(df_week["date"].dropna().unique())
+    conflicting = zero_dates.intersection(recorded_dates)
+    if len(conflicting) > 0:
+        raise ValueError(
+            f"家事なし日と家事記録が重複しています: {list(conflicting.date)}"
+        )
+
+    # 確認済みの家事なし日は0分として集計に追加
+    print(f"第{week_no}週の確定した家事なし日: {len(zero_dates)}日")
+
+# 家事を記録した日＋明示的に家事なしと登録した日だけ表示
 all_dates = pd.DataFrame({
     "date": sorted(
-        df_week["date"]
-        .dropna()
-        .unique()
+        set(df_week["date"].dropna()).union(set(zero_dates))
     )
 })
 
